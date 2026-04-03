@@ -2,6 +2,9 @@
   "name": "azim-sarwad-portfolio",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "18.x"
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,12 +27,5 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": ["react-app"]
-  },
-  "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   }
 }
