@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { personalInfo } from '../data/portfolioData';
 
 const stats = [
-  { value: 3, suffix: '+', label: 'Years Experience' },
-  { value: 3, suffix: '', label: 'AWS Certifications' },
+  { value: 1, suffix: '+', label: 'Years Experience' },
+  { value: 3, suffix: '', label: 'Certifications' },
   { value: 1, suffix: '+', label: 'Projects Shipped' },
   { value: 10, suffix: '+', label: 'Tech Skills' },
 ];
