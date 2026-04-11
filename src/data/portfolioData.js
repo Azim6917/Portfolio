@@ -86,6 +86,22 @@ export const projects = [
     githubUrl: 'https://github.com/Azim6917/GearUp',
     featured: true,
   },
+  {
+  title: 'BrainNex',
+  subtitle: 'AI-Powered Learning Platform',
+  description:
+    'BrainNex is an intelligent learning platform that leverages AI to deliver personalized education experiences. Designed to make learning smarter, faster, and more engaging for students and self-learners alike.',
+  features: [
+    'AI-powered personalization',
+    'Interactive learning modules',
+    'Modern responsive UI',
+    'Deployed on Vercel',
+  ],
+  tech: ['React.js', 'Tailwind CSS', 'JavaScript', 'AI Integration', 'Vercel'],
+  liveUrl: 'https://brain-nex-ten.vercel.app/',
+  githubUrl: 'https://github.com/Azim6917/BrainNex',
+  featured: true,
+},
   // ── Add more projects below ──
   // {
   //   title: 'Project Name',

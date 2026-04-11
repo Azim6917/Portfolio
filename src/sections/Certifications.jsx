@@ -25,7 +25,7 @@ const Certifications = () => (
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {certifications.map((cert, i) => (
-          <div key={cert.title} className={`reveal glass-card cert-glow p-7 flex flex-col delay-${i + 1} group`}>
+          <div key={cert.title} className={`reveal-scale glass-card cert-glow p-7 flex flex-col delay-${i + 1} group`}>
             {/* Gradient top bar */}
             <div className={`h-1 rounded-full bg-gradient-to-r ${cert.color} mb-6 group-hover:h-1.5 transition-all duration-300`} />
 

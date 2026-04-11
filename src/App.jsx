@@ -11,15 +11,12 @@ import Certifications from './sections/Certifications';
 import Contact from './sections/Contact';
 
 const ScrollEffects = () => {
-  const cursorRef = useRef(null);
-  const progressRef = useRef(null);
-  const rafRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const cursorPos = useRef({ x: 0, y: 0 });
-
   useEffect(() => {
-    const progressEl = document.getElementById('scroll-progress');
     const cursorEl = document.getElementById('cursor-glow');
+    const progressEl = document.getElementById('scroll-progress');
+    const mousePos = { x: 0, y: 0 };
+    const cursorPos = { x: 0, y: 0 };
+    let raf;
 
     const onScroll = () => {
       const scrolled = window.scrollY;
@@ -28,42 +25,58 @@ const ScrollEffects = () => {
     };
 
     const onMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
     };
 
     const animateCursor = () => {
       if (cursorEl) {
-        cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.08;
-        cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.08;
-        cursorEl.style.transform = `translate(${cursorPos.current.x - 250}px, ${cursorPos.current.y - 250}px)`;
+        cursorPos.x += (mousePos.x - cursorPos.x) * 0.08;
+        cursorPos.y += (mousePos.y - cursorPos.y) * 0.08;
+        cursorEl.style.transform = `translate(${cursorPos.x - 250}px, ${cursorPos.y - 250}px)`;
       }
-      rafRef.current = requestAnimationFrame(animateCursor);
+      raf = requestAnimationFrame(animateCursor);
     };
 
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -50px 0px' }
-    );
-    revealEls.forEach((el) => revealObserver.observe(el));
+    // ── Reveal observer that re-scans every 300ms for late-rendered elements ──
+    const observed = new WeakSet();
+
+    const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('revealed');
+        }, 30);
+      } else {
+        // Remove class when element leaves viewport so it re-animates on scroll back
+        entry.target.classList.remove('revealed');
+      }
+    });
+  },
+  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+);
+    const scanAndObserve = () => {
+  const els = document.querySelectorAll(
+    '.reveal, .reveal-left, .reveal-right, .reveal-scale'
+  );
+  els.forEach((el) => observer.observe(el));
+};
+
+    // Initial scan + periodic rescan
+    scanAndObserve();
+    const interval = setInterval(scanAndObserve, 300);
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('mousemove', onMouseMove, { passive: true });
-    rafRef.current = requestAnimationFrame(animateCursor);
+    raf = requestAnimationFrame(animateCursor);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('mousemove', onMouseMove);
-      cancelAnimationFrame(rafRef.current);
-      revealObserver.disconnect();
+      cancelAnimationFrame(raf);
+      clearInterval(interval);
+      observer.disconnect();
     };
   }, []);
 
